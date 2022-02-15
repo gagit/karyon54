@@ -22,3 +22,19 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    app.maker.abmgenerator:
+        class: App\CommandHelpers\GeneratorAbm
+        arguments: ['@maker.generator']
+    app.maker.form_type_abmgenerator:
+        class: App\CommandHelpers\FormTypeRenderer
+        arguments: ['@maker.generator']
+
+    app.maker.make_crud:
+        class: App\Maker\MakeAbm
+        arguments: ['@maker.doctrine_helper', '@app.maker.form_type_abmgenerator','%kernel.project_dir%']
+        #arguments: ['@maker.doctrine_helper', '@maker.renderer.form_type_renderer']
+        calls:
+            - [configureCommand, ['@security.command.user_password_encoder', '@?']]
+            - [interact, ['@?', '@?', '@security.command.user_password_encoder']]
+        tags:
+            - { name: maker.command }
