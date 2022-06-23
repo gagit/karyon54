@@ -14,7 +14,6 @@ use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\InputConfiguration;
 use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
-use Symfony\Bundle\MakerBundle\Maker\MakeCrud;
 use Symfony\Bundle\MakerBundle\Str;
 use Symfony\Bundle\MakerBundle\Validator;
 use Symfony\Bundle\TwigBundle\TwigBundle;
@@ -29,7 +28,6 @@ use Symfony\Component\Validator\Validation;
 
 
 use Symfony\Bundle\MakerBundle\Doctrine\DoctrineHelper;
-use Symfony\Bundle\MakerBundle\Renderer\FormTypeRenderer;
 
 /**
  * @author Gabriel Toledo <gabrielandrestoledo@gmail.com>
@@ -153,25 +151,6 @@ class MakeAbm extends AbstractMaker
         $routeName = Str::asRouteName($controllerClassDetails->getRelativeNameWithoutSuffix());
 
         $templatesPath = Str::asFilePath($controllerClassDetails->getRelativeNameWithoutSuffix());
-
-        echo 'Template path: '.$templatesPath.chr(13).chr(10);
-echo $this->proyectDir;
-
-        die();
-
-//        $templatePath = __DIR__.'/../Resources/skeleton/crud/controller/Controller.tpl.php';
-//        if (file_exists($templatePath)) {
-//
-//            die($templatePath);
-//
-//            $templatePath = __DIR__.'/Resources/skeleton/'.$templateName;
-//
-//            if (!file_exists($templatePath)) {
-//                throw new \Exception(sprintf('Cannot find template "%s"', $templateName));
-//            }
-//        }
-//
-//        die("igual no pasas");
 
         $generator->generateController(
             $controllerClassDetails->getFullName(),

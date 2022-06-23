@@ -49,12 +49,17 @@ class <?= $class_name ?> extends <?= $parent_class_name; ?><?= "\n" ?>
         $<?= $entity_var_singular ?> = new <?= $entity_class_name ?>();
         $form = $this->createForm(<?= $form_class_name ?>::class, $<?= $entity_var_singular ?>);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($<?= $entity_var_singular ?>);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('<?= $route_name ?>_index', [], Response::HTTP_SEE_OTHER);
+            try{
+                $entityManager->persist($<?= $entity_var_singular ?>);
+                $entityManager->flush();
+                $this->get('session')->getFlashBag()->add('notice', 'El cambio se realizó correctamente!');
+                return $this->redirectToRoute('<?= $route_name ?>_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Doctrine\DBAL\DBALException $DBalEx) {
+                $this->get('session')->getFlashBag()->add('error', 'Se ha producido un error en la base de datos!!. '. $DBalEx->getMessage() );
+            } catch (\Exception $ex) {
+                $this->get('session')->getFlashBag()->add('error', 'Upss! - '.$ex->getMessage());
+            }
         }
 
 <?php if ($use_render_form) { ?>
@@ -85,10 +90,17 @@ class <?= $class_name ?> extends <?= $parent_class_name; ?><?= "\n" ?>
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            try{
+                $entityManager->flush();
+                $this->get('session')->getFlashBag()->add('notice', 'El cambio se realizó correctamente!');
 
-            return $this->redirectToRoute('<?= $route_name ?>_index', [], Response::HTTP_SEE_OTHER);
-        }
+                return $this->redirectToRoute('<?= $route_name ?>_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Doctrine\DBAL\DBALException $DBalEx) {
+                $this->get('session')->getFlashBag()->add('error', 'Se ha producido un error en la base de datos!!. '. $DBalEx->getMessage() );
+            } catch (\Exception $ex) {
+                $this->get('session')->getFlashBag()->add('error', 'Upss! - '.$ex->getMessage());
+            }
+       }
 
 <?php if ($use_render_form) { ?>
         return $this->renderForm('<?= $templates_path ?>/edit.html.twig', [
