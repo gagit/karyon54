@@ -8,6 +8,7 @@ use <?= $form_full_class_name ?>;
 use <?= $repository_full_class_name ?>;
 <?php endif ?>
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\<?= $parent_class_name ?>;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,8 +25,9 @@ class <?= $class_name ?> extends <?= $parent_class_name; ?><?= "\n" ?>
 {
 <?= $generator->generateRouteForControllerMethod('/index', sprintf('%s_index', $route_name), ['GET']) ?>
 <?php if (isset($repository_full_class_name)): ?>
-    public function index(<?= $repository_class_name ?> $<?= $repository_var ?>): Response
+    public function index(<?= $repository_class_name ?> $<?= $repository_var ?>, PaginatorInterface $paginator): Response
     {
+
         return $this->render('<?= $templates_path ?>/index.html.twig', [
             '<?= $entity_twig_var_plural ?>' => $<?= $repository_var ?>->findAll(),
         ]);

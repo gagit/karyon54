@@ -160,6 +160,7 @@ class MakeAbm extends AbstractMaker
                     'entity_class_name' => $entityClassDetails->getShortName(),
                     'form_full_class_name' => $formClassDetails->getFullName(),
                     'form_class_name' => $formClassDetails->getShortName(),
+                    'form_filter_name' => $formClassDetails->getShortName().'Filter',
                     'route_path' => Str::asRoutePath($controllerClassDetails->getRelativeNameWithoutSuffix()),
                     'route_name' => $routeName,
                     'templates_path' => $templatesPath,

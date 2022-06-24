@@ -45,5 +45,16 @@ class FormTypeRenderer
                 'constraint_use_statements' => $constraintClasses,
             ]
         );
+        $this->generator->generateClass(
+            $formClassDetails->getFullName(),
+            __DIR__.'/../Resources/skeleton/form/TypeFilter.tpl.php',
+            [
+                'bounded_full_class_name' => $boundClassDetails ? $boundClassDetails->getFullName() : null,
+                'bounded_class_name' => $boundClassDetails ? $boundClassDetails->getShortName() : null,
+                'form_fields' => $fields,
+                'field_type_use_statements' => $mergedTypeUseStatements,
+                'constraint_use_statements' => $constraintClasses,
+            ]
+        );
     }
 }
