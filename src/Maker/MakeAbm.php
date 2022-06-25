@@ -188,6 +188,7 @@ class MakeAbm extends AbstractMaker
                 'entity_identifier' => $entityDoctrineDetails->getIdentifier(),
             ],
             '_form' => [],
+            '_formFilter' => [],
             'edit' => [
                 'entity_class_name' => $entityClassDetails->getShortName(),
                 'entity_twig_var_singular' => $entityTwigVarSingular,

@@ -1,8 +1,38 @@
 <?= $helper->getHeadPrintCode($entity_class_name.' index'); ?>
+{% extends 'base.html.twig' %}
+{% block title %}Auto Rubro index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ " {{ parent() }}
+        <script type="text/javascript">
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip({animation: true});
+
+                $('#showDetail').on('shown.bs.modal', function (e) {
+                    var button = $(e.relatedTarget);
+                    var modal = $(this);
+                    modal.find('.modal-body').load(button.data("source"));
+                });
+            });
+        </script>
+{% endblock %}
 
 {% block body %}
-<h5 class="card-header bg-secondary text-light" ><i class="fa fa-list"></i>
-    <?= $entity_class_name ?> index </h5>
+<h5 class="card-header bg-secondary text-light" ><i class="fa fa-list"></i><?= $entity_class_name ?> index </h5>
+<hr/>
+{{ include('<?= $templates_path ?>/_formFilter.html.twig') }}
+<hr/>
+
+<hr/>
+    <a class="btn btn-outline-dark" href="{{ path('<?= $route_name ?>_new') }}"><i class="fa fa-plus"></i> </a>
+<hr/>
+<div class="navigation">
+    {{ knp_pagination_render(entities) }}
+</div>
 <hr/>
     <table class="table table-striped">
         <thead>
@@ -22,8 +52,11 @@
                 <td>
                     <ul>
                         <li style="display: inline-flex" >
-                            <a class="btn btn-outline-dark" href="{{ path('<?= $route_name ?>_show', {'<?= $entity_identifier ?>': <?= $entity_twig_var_singular ?>.<?= $entity_identifier ?>}) }}">
-                                <i class="fa fa-eye"></i> </a>
+                            <button type="button" class="btn btn-outline-dark btn-show"
+                                    data-toggle="modal" data-target="#showDetail"
+                                    data-source="{{ path('<?= $route_name ?>_show', {'<?= $entity_identifier ?>': <?= $entity_twig_var_singular ?>.<?= $entity_identifier ?>}) }}">
+                                <i class="fa fa-eye"></i>
+                            </button>
                         </li>
                         <li style="display: inline-flex" >
                             <a class="btn btn-outline-dark" href="{{ path('<?= $route_name ?>_edit', {'<?= $entity_identifier ?>': <?= $entity_twig_var_singular ?>.<?= $entity_identifier ?>}) }}">
@@ -40,6 +73,21 @@
         </tbody>
     </table>
     <hr/>
-<a class="btn btn-outline-dark" href="{{ path('<?= $route_name ?>_new') }}">
-    <i class="fa fa-plus"></i> </a>
+    <div class="navigation">
+        {{ knp_pagination_render(entities) }}
+    </div>
+    <div class="modal" id="modalPlantilla" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-sm modal-lg modal-xl"  role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

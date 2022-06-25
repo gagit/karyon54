@@ -27,9 +27,28 @@ class <?= $class_name ?> extends <?= $parent_class_name; ?><?= "\n" ?>
 <?php if (isset($repository_full_class_name)): ?>
     public function index(<?= $repository_class_name ?> $<?= $repository_var ?>, PaginatorInterface $paginator): Response
     {
+        $formFilter = $this->createForm(AutoAnioModeloFilterType::class,null,[
+                'method' => 'GET',
+                'attr' => [
+                    'id' => 'idFiltro',
+                    'name' => 'filtro',
+                    'class' => 'form-group dropdown-menu',
+
+                ]
+            ]
+        );
+        $formFilter->handleRequest($request);
+        $filter = $formFilter->isSubmitted() ? $formFilter->getData() : [];
+
+        $<?= $entity_var_plural ?> = $paginator->paginate(
+                $<?= $repository_var ?>->get<?= $class_name ?>Filter($filter), /* query NOT result */
+                $request->query->getInt('page', 1)/*page number*/,
+                20 /*limit per page*/
+            );
 
         return $this->render('<?= $templates_path ?>/index.html.twig', [
-            '<?= $entity_twig_var_plural ?>' => $<?= $repository_var ?>->findAll(),
+            'form' => $formFilter->createView(),
+            '<?= $entity_twig_var_plural ?>' => $<?= $entity_var_plural ?>,
         ]);
     }
 <?php else: ?>
