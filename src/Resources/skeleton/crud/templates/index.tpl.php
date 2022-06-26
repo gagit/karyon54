@@ -74,10 +74,10 @@
     </table>
     <hr/>
     <div class="navigation">
-        {{ knp_pagination_render(entities) }}
+        {{ knp_pagination_render(<?= $entity_twig_var_plural ?>) }}
     </div>
-    <div class="modal" id="modalPlantilla" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-sm modal-lg modal-xl"  role="document">
+    <div class="modal" id="showDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable"  role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

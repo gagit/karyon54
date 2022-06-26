@@ -25,9 +25,9 @@ class <?= $class_name ?> extends <?= $parent_class_name; ?><?= "\n" ?>
 {
 <?= $generator->generateRouteForControllerMethod('/index', sprintf('%s_index', $route_name), ['GET']) ?>
 <?php if (isset($repository_full_class_name)): ?>
-    public function index(<?= $repository_class_name ?> $<?= $repository_var ?>, PaginatorInterface $paginator): Response
+    public function index(<?= $repository_class_name ?> $<?= $repository_var ?>,Request $request, PaginatorInterface $paginator): Response
     {
-        $formFilter = $this->createForm(AutoAnioModeloFilterType::class,null,[
+        $formFilter = $this->createForm(<?= $form_filter_name ?>Type::class, null,[
                 'method' => 'GET',
                 'attr' => [
                     'id' => 'idFiltro',
@@ -47,7 +47,7 @@ class <?= $class_name ?> extends <?= $parent_class_name; ?><?= "\n" ?>
             );
 
         return $this->render('<?= $templates_path ?>/index.html.twig', [
-            'form' => $formFilter->createView(),
+            'formFilter' => $formFilter->createView(),
             '<?= $entity_twig_var_plural ?>' => $<?= $entity_var_plural ?>,
         ]);
     }

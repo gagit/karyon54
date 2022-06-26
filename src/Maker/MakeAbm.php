@@ -156,6 +156,7 @@ class MakeAbm extends AbstractMaker
             $controllerClassDetails->getFullName(),
             $this->proyectDir.'/Resources/skeleton/crud/controller/Controller.tpl.php',
             array_merge([
+                    'parent_class_name' => 'AbstractController',
                     'entity_full_class_name' => $entityClassDetails->getFullName(),
                     'entity_class_name' => $entityClassDetails->getShortName(),
                     'form_full_class_name' => $formClassDetails->getFullName(),
