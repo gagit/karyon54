@@ -1,24 +1,11 @@
 <?= $helper->getHeadPrintCode($entity_class_name.' index'); ?>
-{% extends 'base.html.twig' %}
-{% block title %}Auto Rubro index{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
 {% endblock %}
 
 {% block javascripts %}
-    {{ " {{ parent() }}
-        <script type="text/javascript">
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip({animation: true});
-
-                $('#showDetail').on('shown.bs.modal', function (e) {
-                    var button = $(e.relatedTarget);
-                    var modal = $(this);
-                    modal.find('.modal-body').load(button.data("source"));
-                });
-            });
-        </script>
+    {{ parent() }}
 {% endblock %}
 
 {% block body %}
@@ -31,7 +18,7 @@
     <a class="btn btn-outline-dark" href="{{ path('<?= $route_name ?>_new') }}"><i class="fa fa-plus"></i> </a>
 <hr/>
 <div class="navigation">
-    {{ knp_pagination_render(entities) }}
+    {{ knp_pagination_render(<?= $entity_twig_var_plural ?>) }}
 </div>
 <hr/>
     <table class="table table-striped">

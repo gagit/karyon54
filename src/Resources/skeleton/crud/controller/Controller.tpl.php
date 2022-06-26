@@ -4,6 +4,7 @@ namespace <?= $namespace ?>;
 
 use <?= $entity_full_class_name ?>;
 use <?= $form_full_class_name ?>;
+use <?= $form_filter_full_class_name ?>;
 <?php if (isset($repository_full_class_name)): ?>
 use <?= $repository_full_class_name ?>;
 <?php endif ?>
@@ -27,7 +28,7 @@ class <?= $class_name ?> extends <?= $parent_class_name; ?><?= "\n" ?>
 <?php if (isset($repository_full_class_name)): ?>
     public function index(<?= $repository_class_name ?> $<?= $repository_var ?>,Request $request, PaginatorInterface $paginator): Response
     {
-        $formFilter = $this->createForm(<?= $form_filter_name ?>Type::class, null,[
+        $formFilter = $this->createForm(<?= $form_filter_name ?>::class, null,[
                 'method' => 'GET',
                 'attr' => [
                     'id' => 'idFiltro',
