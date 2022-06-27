@@ -124,6 +124,12 @@ class MakeAbm extends AbstractMaker
                 'repository_class_name' => $repositoryClassDetails->getShortName(),
                 'repository_var' => lcfirst($this->singularize($repositoryClassDetails->getShortName())),
             ];
+            $reflexionRepository = new \ReflectionClass($repositoryClassDetails->getFullName());
+
+            echo $reflexionRepository->getFileName();
+            //echo $reflexionRepository->
+            $templateCodePath=$this->proyectDir.'/src/Resources/skeleton/repository/qbFilters.tpl.php';
+            $funcion = $this->container->get('twig')->render($templateCodePath, []);
         }
 
         $controllerClassDetails = $generator->createClassNameDetails(
