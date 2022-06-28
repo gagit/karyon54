@@ -42,7 +42,7 @@ class <?= $class_name ?> extends <?= $parent_class_name; ?><?= "\n" ?>
         $filter = $formFilter->isSubmitted() ? $formFilter->getData() : [];
 
         $<?= $entity_var_plural ?> = $paginator->paginate(
-                $<?= $repository_var ?>->get<?= $class_name ?>Filter($filter), /* query NOT result */
+                $<?= $repository_var ?>->get<?= $entity_class_name ?>Filter($filter), /* query NOT result */
                 $request->query->getInt('page', 1)/*page number*/,
                 20 /*limit per page*/
             );

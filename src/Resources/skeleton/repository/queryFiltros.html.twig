@@ -1,0 +1,16 @@
+   
+    public function get{{ className }}Filter($filter)
+    {
+        $qb = $this->createQueryBuilder('q')
+                ->select('q');
+    {% for field in fields %}
+        {% if field.fieldName !='id' %}
+if(array_key_exists('{{ field.fieldName }}',$filter)) {
+            $qb->andWhere($qb->expr()->eq('q.{{ field.fieldName }}', ':{{ field.fieldName }}'))
+                ->setParameter('{{ field.fieldName }}', $filter['{{ field.fieldName }}']);
+        }
+
+        {% endif %}
+    {% endfor %}
+        return  $qb;
+    }

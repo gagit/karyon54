@@ -21,12 +21,12 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 use Symfony\Component\Validator\Validation;
-
-
+use Twig\Environment;
 use Symfony\Bundle\MakerBundle\Doctrine\DoctrineHelper;
 
 /**
@@ -39,13 +39,20 @@ class MakeAbm extends AbstractMaker
     private $inflector;
     private $controllerClassName;
     private $proyectDir;
+    private $container;
+    private $twig;
 
 
-    public function __construct(DoctrineHelper $doctrineHelper, \App\CommandHelpers\FormTypeRenderer $formTypeRenderer,$proyectDir)
+    public function __construct(DoctrineHelper $doctrineHelper,
+                                \App\CommandHelpers\FormTypeRenderer $formTypeRenderer,
+        $proyectDir,
+                                Environment $twig, ContainerInterface $container)
     {
         $this->doctrineHelper = $doctrineHelper;
         $this->formTypeRenderer = $formTypeRenderer;
         $this->proyectDir=$proyectDir;
+        $this->container=$container;
+        $this->twig=$twig;
 
         if (class_exists(InflectorFactory::class)) {
             $this->inflector = InflectorFactory::create()->build();
@@ -124,12 +131,22 @@ class MakeAbm extends AbstractMaker
                 'repository_class_name' => $repositoryClassDetails->getShortName(),
                 'repository_var' => lcfirst($this->singularize($repositoryClassDetails->getShortName())),
             ];
-            $reflexionRepository = new \ReflectionClass($repositoryClassDetails->getFullName());
 
-            echo $reflexionRepository->getFileName();
-            //echo $reflexionRepository->
-            $templateCodePath=$this->proyectDir.'/src/Resources/skeleton/repository/qbFilters.tpl.php';
-            $funcion = $this->container->get('twig')->render($templateCodePath, []);
+            $reflexionRepository = new \ReflectionClass($repositoryClassDetails->getFullName());
+            $templateCodePath='karyon54/queryFiltros.html.twig';
+            $funcion = $this->twig->render($templateCodePath,
+                [
+                    'className'=>$entityClassDetails->getRelativeNameWithoutSuffix(),
+                    'fields'=>$entityDoctrineDetails->getDisplayFields()
+                ]
+            );
+
+            $fp = fopen($reflexionRepository->getFileName(), 'r+');
+            fseek($fp, -2,SEEK_END);
+            $finalData = fgets($fp, 2);
+            fseek($fp, -2,SEEK_END);
+            fwrite($fp,$funcion.$finalData,strlen($funcion.$finalData));
+            fclose($fp);
         }
 
         $controllerClassDetails = $generator->createClassNameDetails(
