@@ -31,9 +31,9 @@ class <?= $class_name ?> extends <?= $parent_class_name; ?><?= "\n" ?>
         $formFilter = $this->createForm(<?= $form_filter_name ?>::class, null,[
                 'method' => 'GET',
                 'attr' => [
-                    'id' => 'idFiltro',
-                    'name' => 'filtro',
-                    'class' => 'form-group dropdown-menu',
+                    'id' => 'idFilter',
+                    'name' => 'filter',
+                    'class' => 'px-4 py-3',
 
                 ]
             ]

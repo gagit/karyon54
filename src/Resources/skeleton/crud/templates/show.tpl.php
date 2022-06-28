@@ -1,7 +1,3 @@
-<?= $helper->getHeadPrintCode($entity_class_name) ?>
-
-{% block body %}
-
 <h5 class="card-header bg-secondary text-light" ><i class="fa fa-eye"></i>
     Ver <?= $entity_class_name ?> </h5>
 <hr/>
@@ -31,5 +27,3 @@
         {{ include('<?= $templates_path ?>/_delete_form.html.twig') }}
     </li>
 </ul>
-
-{% endblock %}
